@@ -12,8 +12,9 @@ pipeline {
         git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
       }
     }
-    stage('Build') {
+    stage('test') {
       steps {
+        sh 'cd client'
         sh 'npm install'
       }
     }
