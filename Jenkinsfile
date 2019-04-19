@@ -7,19 +7,18 @@ pipeline {
 
   }
   stages {
-    stage('st1') {
-      steps {
-        git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
-      }
-    }
-    stage('test') {
+    stage('Build') {
       steps {
         sh 'cd client'
         sh 'npm install'
+        sh 'mvn clean spring-boot:run'
+        sh 'mvn -B -DskipTests clean package'
       }
     }
-  }
-  environment {
-    command = 'mvn clean spring-boot:run'
+    stage('Test') {
+      steps {
+        sh 'mvn test'
+      }
+    }
   }
 }
