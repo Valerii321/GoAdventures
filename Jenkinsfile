@@ -14,7 +14,6 @@ pipeline {
     stage('Build') {
       steps {
         sh 'cd client'
-        sh 'npm install'
         sh 'mvn clean spring-boot:run'
         sh 'mvn -B -DskipTests clean package'
       }
