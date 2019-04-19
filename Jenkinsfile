@@ -6,13 +6,9 @@ pipeline {
 
   }
   stages {
-    stage('repo') {
-      steps {
-        git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
-      }
-    }
     stage('Build') {
       steps {
+        git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
         sh 'cd client'
         sh 'mvn clean spring-boot:run'
         sh 'mvn -B -DskipTests clean package'
