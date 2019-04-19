@@ -1,8 +1,8 @@
 pipeline {
   agent {
     docker {
-      image 'node:latest'
-      args '-p 3000:3000'
+      image 'maven:3.6-jdk-12-alpine'
+      args '-p 8080:8080'
     }
 
   }
@@ -18,5 +18,8 @@ pipeline {
         sh 'npm install'
       }
     }
+  }
+  environment {
+    command = 'mvn clean spring-boot:run'
   }
 }
