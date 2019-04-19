@@ -7,6 +7,11 @@ pipeline {
 
   }
   stages {
+    stage('repo') {
+      steps {
+        git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
+      }
+    }
     stage('Build') {
       steps {
         sh 'cd client'
