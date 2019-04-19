@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
       image 'maven:3.6-jdk-11'
-      args '-p 8080:8080'
+      args '-v $HOME/.m2:/root/.m2'
     }
 
   }
