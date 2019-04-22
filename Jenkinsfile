@@ -9,9 +9,8 @@ pipeline {
     stage('Build') {
       steps {
         git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
-        sh 'cd server &&'
+        sh 'cd server && mvn clean spring-boot:run'
         sh 'cd server && ls -la'
-        sh 'mvn clean spring-boot:run'
         sh 'mvn -B -DskipTests clean package'
       }
     }
