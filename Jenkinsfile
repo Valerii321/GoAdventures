@@ -11,8 +11,6 @@ pipeline {
         git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
         sh 'cd server'
         sh 'ls -la'
-        sh 'cd goadventures'
-        sh 'ls -la'
         sh 'mvn clean spring-boot:run'
         sh 'mvn -B -DskipTests clean package'
       }
