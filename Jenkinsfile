@@ -17,7 +17,7 @@ pipeline {
     }
     stage('notification') {
       steps {
-try {
+  try {
     stage('build') {
       println('so far so good...')
     }
