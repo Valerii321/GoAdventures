@@ -10,8 +10,9 @@ pipeline {
       steps {
         git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
         sh 'cd server/goadventures/ && ls -la'
-        sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
+        sh 'cd server/goadventures/ && mvn install '
         sh 'cd server/goadventures/ && mvn -B -DskipTests clean package'
+        sh 'cd server/goadventures/ && mvn test -Dmaven.test.skip=true'
       }
     }
     stage('notification') {
