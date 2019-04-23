@@ -14,9 +14,9 @@ pipeline {
         sh 'cd server/goadventures/ && mvn -B -DskipTests clean package'
       }
     }
-    stage('Test') {
+    stage('notification') {
       steps {
-        sh 'cd server/goadventures/ && mvn test -Dmaven.test.skip=true'
+        slackSend(color: 'good', message: 'Message from Jenkins Pipeline')
       }
     }
   }
