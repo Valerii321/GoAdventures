@@ -15,13 +15,17 @@ pipeline {
         sh 'cd server/goadventures/ && mvn test -Dmaven.test.skip=true'
       }
     }
-    stage('notification') {
-      steps {  
-        slackSend color: 'good', message: 'Good result'
-        slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-    
-          }
-        }
-      }
+  }
+  post {
+    failure {
+      slackSend(color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
     }
-  
+
+    success {
+      slackSend(color: '#008000', message: "GOOD Result: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+    }
+
+  }
+}
