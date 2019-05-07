@@ -15,7 +15,7 @@ pipeline {
         sh 'cd server/goadventures/ && mvn test -Dmaven.test.skip=true'
       }
     }
-  }
+  
     stage('notification') {
       steps{
         post {
