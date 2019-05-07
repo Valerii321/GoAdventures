@@ -14,7 +14,8 @@ pipeline {
         sh 'cd server/goadventures/ && mvn -B -DskipTests clean package'
         sh 'cd server/goadventures/ && mvn test -Dmaven.test.skip=true'
       }
-    }  
+    }
+  }
     stage('notification') {
       steps{
         post {
@@ -29,4 +30,3 @@ pipeline {
       }
     }
   }
-}
