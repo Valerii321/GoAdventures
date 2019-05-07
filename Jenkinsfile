@@ -3,7 +3,6 @@ pipeline {
     docker {
       image 'maven:3.6-jdk-11'
     }
-
   }
   stages {
     stage('Build') {
@@ -16,7 +15,6 @@ pipeline {
       }
     }
   }
-
   post {
   failure {
     slackSend(color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
