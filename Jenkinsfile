@@ -25,6 +25,7 @@ pipeline {
 
           success {
             slackSend(color: '#008000', message: "GOOD Result: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            }
           }
         }
       }
