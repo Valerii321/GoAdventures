@@ -3,6 +3,7 @@ pipeline {
     docker {
       image 'maven:3.6-jdk-11'
     }
+
   }
   stages {
     stage('Build') {
@@ -14,13 +15,25 @@ pipeline {
         sh 'cd server/goadventures/ && mvn test -Dmaven.test.skip=true'
       }
     }
+    stage('build & SonarQube analysis') {
+      steps {
+        withSonarQubeEnv('My SonarQube Server') {
+          sh 'mvn clean package sonar:sonar'
+        }
+
+      }
+    }
   }
   post {
-  failure {
-    slackSend(color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-  }
-  success {
-    slackSend(color: '#008000', message: "GOOD Result: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-    }             
+    failure {
+      slackSend(color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+    }
+
+    success {
+      slackSend(color: '#008000', message: "GOOD Result: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+    }
+
   }
 }
