@@ -1,25 +1,25 @@
 pipeline {
+  agent {
+    docker {
+      image 'maven:3.6-jdk-11'
+    }
+
+  }
   stages {
-    stage('build & SonarQube analysis') {
-      agent {
-        docker {
-          image 'maven:3.6-jdk-11'
-          args '--network=jenkinsnet'
-        }
-}
-    stage('Build') {
+    stage('Build & SonarQube analysis') {
       steps {
-        git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
-        sh 'cd server/goadventures/ && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V'
+        git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')        
+      }
+    }
+    stage('build & SonarQube analysis') {
+      steps {        
         withSonarQubeEnv('Sonar') {
-          sh 'cd server/goadventures && mvn sonar:sonar'
-          }
-        sh 'cd server/goadventures/ && mvn -B -DskipTests clean package'
+          sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
+          sh 'cd server/goadventures/ && mvn clean package sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -DskipTests=true"'
+        }
       }
     }
   }
-  
-  
   post {
     failure {
       slackSend(color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
