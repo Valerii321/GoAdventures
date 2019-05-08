@@ -2,6 +2,7 @@ pipeline {
   agent {
     docker {
       image 'maven:3.6-jdk-11'
+      args '--network=cicd'
     }
 
   }
