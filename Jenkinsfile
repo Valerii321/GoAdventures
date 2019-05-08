@@ -1,12 +1,12 @@
 pipeline {
-  agent {
-    docker {
-      image 'maven:3.6-jdk-11'
-      args '--network=test'
-    }
-
-  }
   stages {
+    stage('build & SonarQube analysis') {
+      agent {
+        docker {
+          image 'maven:3.6-jdk-11'
+          args '--network=jenkinsnet'
+        }
+}
     stage('Build') {
       steps {
         git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
