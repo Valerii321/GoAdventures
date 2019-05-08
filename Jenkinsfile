@@ -6,7 +6,7 @@ pipeline {
 
   }
   stages {
-    stage('Build & SonarQube analysis') {
+    stage('get git') {
       steps {
         git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')        
       }
