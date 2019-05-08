@@ -10,7 +10,7 @@ pipeline {
       steps {
         git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
         sh 'cd server/goadventures/ && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V'
-        withSonarQubeEnv('sonarqubee') {
+        withSonarQubeEnv('Sonar') {
           sh 'cd server/goadventures && mvn sonar:sonar'
           }
         sh 'cd server/goadventures/ && mvn -B -DskipTests clean package'
