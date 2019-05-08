@@ -12,7 +12,7 @@ pipeline {
         sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
         sh 'cd server/goadventures/ && mvn -B -DskipTests clean package'
       }
-    }
+    
       steps {
         withSonarQubeEnv('Sonar') {
           sh 'cd server/goadventures/ && mvn clean package sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -DskipTests=true"'
