@@ -9,16 +9,14 @@ pipeline {
     stage('Build') {
       steps {
         git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')
-        sh 'cd server/goadventures/ && ls -la'
         sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
         sh 'cd server/goadventures/ && mvn -B -DskipTests clean package'
-        sh 'cd server/goadventures/ && mvn test -Dmaven.test.skip=true'
       }
     }
     stage('build & SonarQube analysis') {
       steps {
-        withSonarQubeEnv('My SonarQube Server') {
-          sh 'mvn clean package sonar:sonar'
+        withSonarQubeEnv('Sonar') {
+          sh 'mvn clean package sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -DskipTests=true"'
         }
 
       }
