@@ -15,7 +15,8 @@ pipeline {
       steps {        
         withSonarQubeEnv('Sonar') {
           sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
-          sh 'cd server/goadventures/ && mvn clean package sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -DskipTests=true"'
+          sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -DskipTests=true"
+//          sh 'cd server/goadventures/ && mvn clean package sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -DskipTests=true"'
         }
       }
     }
