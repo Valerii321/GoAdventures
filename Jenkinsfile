@@ -16,7 +16,7 @@ pipeline {
       steps {        
         sh 'cd server/goadventures && mvn dependency:go-offline'
         sh 'cd server/goadventures && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V'
-        withSonarQubeEnv('sonarqubee') {
+        withSonarQubeEnv('Sonar') {
           sh 'cd server/goadventures && mvn sonar:sonar'
           }
         }
