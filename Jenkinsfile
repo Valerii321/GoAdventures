@@ -14,10 +14,10 @@ pipeline {
     }
     stage('build & SonarQube analysis') {
       steps {        
-        withSonarQubeEnv('Sonar') {
-//          sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
-          sh 'cd server/goadventures/ && ${mvnCmd} clean package sonar:sonar -Dsonar.host.url=http://localhost:9000 -DskipTests=true'
-//          sh 'cd server/goadventures/ && mvn clean package sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -DskipTests=true"'
+        sh 'cd server/goadventures && mvn dependency:go-offline'
+        sh 'cd server/goadventures && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V'
+        withSonarQubeEnv('sonarqubee') {
+          sh 'cd server/goadventures && mvn sonar:sonar'
           }
         }
       }
