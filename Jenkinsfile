@@ -11,16 +11,20 @@ pipeline {
         git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')        
       }
     }
-    stage('build & SonarQube analysis') {
+    stage('build') {
       steps {        
-        sh 'cd server/goadventures && mvn dependency:go-offline'
-        sh 'cd server/goadventures && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V'
-        withSonarQubeEnv('Sonar') {
-          sh 'cd server/goadventures && mvn sonar:sonar'
+        sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
+        sh 'cd server/goadventures/ && mvn clean package -DskipTests=true'
           }
+        }
+    stage('SonarQube analysis') {
+      steps {
+        withSonarQubeEnv('Sonar') {
+          sh 'cd server/goadventures/ && mvn sonar:sonar -Dsonar.host.url=http://insp:9000 -DskipTests=true'
         }
       }
     }
+  }
   post {
     failure {
       slackSend(color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
