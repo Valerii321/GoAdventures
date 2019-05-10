@@ -21,7 +21,7 @@ pipeline {
     stage('SonarQube analysis') {
       steps {
         withSonarQubeEnv('Sonar') {
-          sh 'cd server/goadventures/ && mvn sonar:sonar -Dsonar.host.url=http://insp:9000 -DskipTests=true'
+          sh 'cd server/goadventures/ && mvn sonar:sonar -Dsonar.host.url=http://insp:9000 '
         }
       }
     }
