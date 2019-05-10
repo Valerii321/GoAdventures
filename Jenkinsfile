@@ -3,6 +3,7 @@ pipeline {
     docker {
       image 'maven:3.6-jdk-11'
       args '--network=jenkins_local'
+//      -v /var/run/docker.sock:/var/run/docker.sock
     }
   }
   stages {
