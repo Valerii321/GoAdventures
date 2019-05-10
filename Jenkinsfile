@@ -7,31 +7,36 @@ pipeline {
     }
   }
   stages {
-    stage('get git') {
-      steps {
-        git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')        
-      }
-    }
-    stage('build') {
-      steps {        
-        sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
-        sh 'cd server/goadventures/ && mvn clean package -DskipTests=true'
+    stage ('build & analysis') {
+      parallel {
+        stage('get git') {
+          steps {
+            git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')        
           }
         }
-    stage('SonarQube analysis') {
-      steps {
-        withSonarQubeEnv('Sonar') {
-          sh 'cd server/goadventures/ && mvn sonar:sonar -Dsonar.host.url=http://insp:9000 '
+        stage('build') {
+          steps {        
+            sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
+            sh 'cd server/goadventures/ && mvn clean package -DskipTests=true'
+              }
+            }
+        stage('SonarQube analysis') {
+          steps {
+            withSonarQubeEnv('Sonar') {
+              sh 'cd server/goadventures/ && mvn sonar:sonar -Dsonar.host.url=http://insp:9000 '
+            }
+          }
         }
       }
     }
   }
   post {
     failure {
-      slackSend(color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    //  slackSend(color: '#FF0000', message: ":angry: Failed Bimeister: '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      slackSend(color: '#FF0000', message: ":angry: Failed Bimeister: '${env.GIT_BRANCH} [${env.BUILD_NUMBER}]' (${env.RUN_DISPLAY_URL})")
     }
     success {
-      slackSend(color: '#008000', message: "GOOD Result: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      slackSend(color: '#008000', message: ":sunglasses: GOOD Result: '${env.GIT_BRANCH} [${env.BUILD_NUMBER}]' (${env.RUN_DISPLAY_URL})")
     }
   }
 }
