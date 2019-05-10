@@ -7,25 +7,21 @@ pipeline {
     }
   }
   stages {
-    stage ('build & analysis') {
-      parallel {
-        stage('get git') {
-          steps {
-            git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')        
+    stage('get git') {
+      steps {
+        git(url: 'https://github.com/Valerii321/GoAdventures', branch: 'develop')        
+      }
+    }
+    stage('build') {
+      steps {        
+        sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
+        sh 'cd server/goadventures/ && mvn clean package -DskipTests=true'
           }
         }
-        stage('build') {
-          steps {        
-            sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
-            sh 'cd server/goadventures/ && mvn clean package -DskipTests=true'
-              }
-            }
-        stage('SonarQube analysis') {
-          steps {
-            withSonarQubeEnv('Sonar') {
-              sh 'cd server/goadventures/ && mvn sonar:sonar -Dsonar.host.url=http://insp:9000 '
-            }
-          }
+    stage('SonarQube analysis') {
+      steps {
+        withSonarQubeEnv('Sonar') {
+          sh 'cd server/goadventures/ && mvn sonar:sonar -Dsonar.host.url=http://insp:9000 '
         }
       }
     }
