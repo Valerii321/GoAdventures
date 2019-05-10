@@ -13,7 +13,8 @@ pipeline {
       }
     }
     stage('build') {
-      steps {        
+      steps {
+        sh 'ls'
         sh 'cd server/goadventures/ && mvn install -Dmaven.test.skip=true'
         sh 'cd server/goadventures/ && mvn clean package -DskipTests=true'
           }
